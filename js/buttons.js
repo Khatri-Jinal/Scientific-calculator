@@ -1,17 +1,17 @@
 export const POWER = "POWER("
 export let calculator_buttons = [
     {
-      name: "deg",
-      symbol: "DEG",
-      formula: false,
-      type: "key",
-    },
-    {
-      name: "rad",
-      symbol: "RAD",
-      formula: false,
-      type: "key",
-    },
+        name: "deg",
+        symbol: "DEG",
+        formula: false,
+        type: "key",
+      },
+      {
+        name: "rad",
+        symbol: "RAD",
+        formula: false,
+        type: "key",
+      },
     {
       name: "square-root",
       symbol: "√x",

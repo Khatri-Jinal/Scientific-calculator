@@ -7,6 +7,11 @@ const func_container = document.getElementById("funcs");
 const f_block = document.getElementById("f-block");
 const func_arrow = document.getElementById("func_arrow");
 const trig_arrow = document.getElementById("trig_arrow");
+const other_funcs=document.getElementById("other-funcs");
+
+other_funcs.addEventListener("click",()=>{
+  changeFuncs();
+})
 const FACTORIAL = "FACTORIAL";
 const OPERATORS = ["+", "-", "*", "/"];
 let data = {
@@ -15,10 +20,10 @@ let data = {
 };
 let ans = 0;
 let result;
-
+let btn;
 const input_element = document.querySelector(".btn-wrap");
 const output_operation_element = document.querySelector("#display");
-let RADIAN = true;
+let RADIAN = false;
 let memory_value = 0;
 const deg_btn = document.getElementById("deg");
 
@@ -48,13 +53,12 @@ f_block.addEventListener("click", () => {
 });
 
 function angleToggle() {
-  event.stopPropagation;
-  console.log(RADIAN);
   if (RADIAN){
     deg_btn.innerHTML='RAD';
   }else{
     deg_btn.innerHTML='DEG';
   }
+  return false;
 }
 
 function negate(num) {
@@ -67,8 +71,8 @@ function toExponent(number) {
 }
 
 function changeFuncs() {
-  square_cube = document.getElementById("sq-cube").innerHTML;
-  square_cube_root = document.getElementById("sq-cube-root").innerHTML;
+ let square_cube = document.getElementById("sq-cube").innerHTML;
+ let square_cube_root = document.getElementById("sq-cube-root").innerHTML;
   if (square_cube == "x²") {
     document.getElementById("sq-cube").innerHTML = "x​³";
   } else {
@@ -83,16 +87,17 @@ function changeFuncs() {
 
 input_element.addEventListener("click", (event) => {
   const target_btn = event.target;
-  calculator_buttons.forEach((button) => {
+  btn=target_btn.innerHTML;
+  for(let button of calculator_buttons){
     if (button.symbol == target_btn.innerHTML) {
-      calculator(button);
-      memoryFunction(button);
-    }
-  });
+           calculator(button);
+           memoryFunction(button);
+           break;
+        }
+  }
 });
 
 function memoryFunction(button) {
-  let btn = event.target.innerHTML;
   switch (btn) {
     case "MC":
       memory_value = 0;
@@ -246,7 +251,7 @@ function calculator(button) {
       data.operation.push(symbol);
       data.formula.push(formula);
     }
-  } else if (button.type == "key") {
+  } else if (button.type === "key") {
     if (button.name == "clear") {
       data.operation = [];
       data.formula = [];
@@ -255,10 +260,11 @@ function calculator(button) {
       data.operation.pop();
       data.formula.pop();
     } else if (button.name == "deg") {
-      RADIAN = false;
+      RADIAN = true;
       angleToggle();
+
     }else if (button.name == "rad") {
-      RADIAN=true;
+      RADIAN=false;
       angleToggle();
     }
     
@@ -343,7 +349,7 @@ function factorialnumgetter(formula, FACTORIAL_SEARCH_RESULT) {
 function powerbasegetter(formula, POWER_SEARCH_RESULT) {
   let powers_base = [];
 
-  POWER_SEARCH_RESULT.forEach((_,power_index) => {
+  POWER_SEARCH_RESULT.forEach((power_index) => {
     let base = [];
     let paren_count = 0;
     let prev_idx = power_index - 1;
