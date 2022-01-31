@@ -1,356 +1,21 @@
+import {POWER,calculator_buttons} from './buttons.js';
+
+
 const trig_container = document.getElementById("trigo_funcs");
 const trig_block = document.getElementById("trig-block");
 const func_container = document.getElementById("funcs");
 const f_block = document.getElementById("f-block");
 const func_arrow = document.getElementById("func_arrow");
 const trig_arrow = document.getElementById("trig_arrow");
-const POWER = "POWER(",
-  FACTORIAL = "FACTORIAL";
+const FACTORIAL = "FACTORIAL";
 const OPERATORS = ["+", "-", "*", "/"];
 let data = {
   operation: [],
   formula: [],
 };
 let ans = 0;
-let calculator_buttons = [
-  {
-    name: "deg",
-    symbol: "DEG",
-    formula: false,
-    type: "key",
-  },
-  {
-    name: "square-root",
-    symbol: "√x",
-    formula: "Math.sqrt(",
-    type: "math_function",
-  },
-  {
-    name: "cube-root",
-    symbol: "∛x",
-    formula: "Math.cbrt(",
-    type: "math_function",
-  },
-  {
-    name: "square",
-    symbol: "x²",
-    formula: POWER,
-    type: "math_function",
-  },
+let result;
 
-  {
-    name: "cube",
-    symbol: "x​³",
-    formula: POWER,
-    type: "math_function",
-  },
-  {
-    name: "invert_sign",
-    symbol: "+/-",
-    formula: "negate(",
-    type: "math_function",
-  },
-  {
-    name: "open-parenthesis",
-    symbol: "(",
-    formula: "(",
-    type: "number",
-  },
-  {
-    name: "close-parenthesis",
-    symbol: ")",
-    formula: ")",
-    type: "number",
-  },
-  {
-    name: "clear",
-    symbol: "C",
-    formula: false,
-    type: "key",
-  },
-  {
-    name: "delete",
-    symbol: "⌫",
-    formula: false,
-    type: "key",
-  },
-  {
-    name: "pi",
-    symbol: "π",
-    formula: "Math.PI",
-    type: "number",
-  },
-  {
-    name: "cos",
-    symbol: "cos",
-    formula: "trigo(Math.cos,",
-    type: "trigo_function",
-  },
-  {
-    name: "sin",
-    symbol: "sin",
-    formula: "trigo(Math.sin,",
-    type: "trigo_function",
-  },
-  {
-    name: "tan",
-    symbol: "tan",
-    formula: "trigo(Math.tan,",
-    type: "trigo_function",
-  },
-  {
-    name: "7",
-    symbol: 7,
-    formula: 7,
-    type: "number",
-  },
-  {
-    name: "8",
-    symbol: 8,
-    formula: 8,
-    type: "number",
-  },
-  {
-    name: "9",
-    symbol: 9,
-    formula: 9,
-    type: "number",
-  },
-  {
-    name: "division",
-    symbol: "÷",
-    formula: "/",
-    type: "operator",
-  },
-  {
-    name: "e",
-    symbol: "e",
-    formula: "Math.E",
-    type: "number",
-  },
-  {
-    name: "acos",
-    symbol: "acos",
-    formula: "inv_trigo(Math.acos,",
-    type: "trigo_function",
-  },
-  {
-    name: "asin",
-    symbol: "asin",
-    formula: "inv_trigo(Math.asin,",
-    type: "trigo_function",
-  },
-  {
-    name: "atan",
-    symbol: "atan",
-    formula: "inv_trigo(Math.atan,",
-    type: "trigo_function",
-  },
-  {
-    name: "4",
-    symbol: 4,
-    formula: 4,
-    type: "number",
-  },
-  {
-    name: "5",
-    symbol: 5,
-    formula: 5,
-    type: "number",
-  },
-  {
-    name: "6",
-    symbol: 6,
-    formula: 6,
-    type: "number",
-  },
-  {
-    name: "multiplication",
-    symbol: "×",
-    formula: "*",
-    type: "operator",
-  },
-  {
-    name: "factorial",
-    symbol: "n!",
-    formula: "FACTORIAL",
-    type: "math_function",
-  },
-  {
-    name: "exp",
-    symbol: "exp",
-    formula: "Math.exp",
-    type: "math_function",
-  },
-  {
-    name: "ln",
-    symbol: "ln",
-    formula: "Math.log",
-    type: "math_function",
-  },
-  {
-    name: "log",
-    symbol: "log",
-    formula: "Math.log10",
-    type: "math_function",
-  },
-  {
-    name: "1",
-    symbol: 1,
-    formula: 1,
-    type: "number",
-  },
-  {
-    name: "2",
-    symbol: 2,
-    formula: 2,
-    type: "number",
-  },
-  {
-    name: "3",
-    symbol: 3,
-    formula: 3,
-    type: "number",
-  },
-  {
-    name: "subtraction",
-    symbol: "–",
-    formula: "-",
-    type: "operator",
-  },
-  {
-    name: "power",
-    symbol: "x<sup>y</sup>",
-    formula: POWER,
-    type: "math_function",
-  },
-  {
-    name: "power",
-    symbol: "10<sup>x</sup>",
-    formula: POWER,
-    type: "math_function",
-  },
-  {
-    name: "trunc",
-    symbol: "trunc",
-    formula: "Math.trunc(",
-    type: "math_function",
-  },
-  {
-    name: "floor",
-    symbol: "floor",
-    formula: "Math.floor(",
-    type: "math_function",
-  },
-  {
-    name: "ceil",
-    symbol: "ceil",
-    formula: "Math.ceil(",
-    type: "math_function",
-  },
-  {
-    name: "round",
-    symbol: "round",
-    formula: "Math.round(",
-    type: "math_function",
-  },
-  {
-    name: "sign",
-    symbol: "sign",
-    formula: "Math.sign(",
-    type: "math_function",
-  },
-  {
-    name: "fixedToExponent",
-    symbol: "F-E",
-    formula: "toExponent(",
-    type: "math_function",
-  },
-  {
-    name: "ANS",
-    symbol: "ANS",
-    formula: "ans",
-    type: "number",
-  },
-  {
-    name: "percent",
-    symbol: "%",
-    formula: "/100",
-    type: "number",
-  },
-  {
-    name: "comma",
-    symbol: ".",
-    formula: ".",
-    type: "number",
-  },
-  {
-    name: "0",
-    symbol: 0,
-    formula: 0,
-    type: "number",
-  },
-  {
-    name: "calculate",
-    symbol: "=",
-    formula: "=",
-    type: "calculate",
-  },
-  {
-    name: "addition",
-    symbol: "+",
-    formula: "+",
-    type: "operator",
-  },
-  {
-    name: "Inverse",
-    symbol: "1/x",
-    formula: "(1/",
-    type: "number",
-  },
-  {
-    name: "mod",
-    symbol: "mod",
-    formula: "%",
-    type: "operator",
-  },
-  {
-    name: "value-mod",
-    symbol: "|x|",
-    formula: "Math.abs(",
-    type: "operator",
-  },
-  {
-    name: "memory-store",
-    symbol: "MS",
-    formula: false,
-    type: "memory_function",
-  },
-  {
-    name: "memory-clear",
-    symbol: "MC",
-    formula: false,
-    type: "memory_function",
-  },
-  {
-    name: "memory-recall",
-    symbol: "MR",
-    formula: false,
-    type: "memory_function",
-  },
-  {
-    name: "memory-add",
-    symbol: "M+",
-    formula: false,
-    type: "memory_function",
-  },
-  {
-    name: "memory-subtract",
-    symbol: "M-",
-    formula: false,
-    type: "memory_function",
-  },
-];
 const input_element = document.querySelector(".btn-wrap");
 const output_operation_element = document.querySelector("#display");
 let RADIAN = true;
@@ -383,9 +48,13 @@ f_block.addEventListener("click", () => {
 });
 
 function angleToggle() {
-  deg_btn.classList.toggle("active-angle");
-  event.stopPropagation();
-  RADIAN = !RADIAN;
+  event.stopPropagation;
+  console.log(RADIAN);
+  if (RADIAN){
+    deg_btn.innerHTML='RAD';
+  }else{
+    deg_btn.innerHTML='DEG';
+  }
 }
 
 function negate(num) {
@@ -440,6 +109,8 @@ function memoryFunction(button) {
     case "MS":
       memory_value = parseInt(output_operation_element.value);
       break;
+    default:
+      return;
   }
   if (memory_value === 0) {
     document.getElementsByClassName("memory-btn")[0].classList.add("disabled");
@@ -586,9 +257,13 @@ function calculator(button) {
     } else if (button.name == "deg") {
       RADIAN = false;
       angleToggle();
+    }else if (button.name == "rad") {
+      RADIAN=true;
+      angleToggle();
     }
+    
   } else if (button.type == "calculate") {
-    formula_str = data.formula.join("");
+   let formula_str = data.formula.join("");
     let POWER_SEARCH_RESULT = search(data.formula, POWER);
     let FACTORIAL_SEARCH_RESULT = search(data.formula, FACTORIAL);
     const BASES = powerbasegetter(data.formula, POWER_SEARCH_RESULT);
@@ -668,7 +343,7 @@ function factorialnumgetter(formula, FACTORIAL_SEARCH_RESULT) {
 function powerbasegetter(formula, POWER_SEARCH_RESULT) {
   let powers_base = [];
 
-  POWER_SEARCH_RESULT.forEach((power_index) => {
+  POWER_SEARCH_RESULT.forEach((_,power_index) => {
     let base = [];
     let paren_count = 0;
     let prev_idx = power_index - 1;
@@ -744,11 +419,11 @@ function inv_trigo(callback, value) {
 }
 
 function factorial(number) {
-  if (number % 1 != 0) {
+  if (number % 1 !== 0) {
     return gamma(number + 1);
   }
 
-  if (number == 0 || number == 1) {
+  if (number === 0 || number === 1) {
     return 1;
   }
 
@@ -757,11 +432,6 @@ function factorial(number) {
   for (let i = 1; i <= number; i++) {
     result *= i;
   }
-
-  if (result == Infinity) {
-    return Infinity;
-  }
-
   return result;
 }
 
