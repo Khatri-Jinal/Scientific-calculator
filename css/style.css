@@ -113,9 +113,11 @@ input {
 }
 .trig-block{
   position:relative;
+  cursor: pointer;
 }
 .f-block{
   position:relative;
+  cursor: pointer;
 }
 #funcs span,#trigo_funcs span{
   width:100%;
