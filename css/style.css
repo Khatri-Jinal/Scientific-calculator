@@ -1,0 +1,141 @@
+.calc-wrap {
+  max-width: 470px;
+  margin: 20px auto;
+  background-color: #f1f1f1;
+  padding: 6px 14px;
+}
+.custom-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.custom-col {
+  flex: 0 0 20%;
+  max-width: 20%;
+  height: 50px;
+  padding:0;
+  background-color: #f7f7f7;
+  border: 2px solid #f1f1f1;
+}
+.top {
+  margin-bottom: 16px;
+}
+.trig-block .img-block,
+.f-block .img-block {
+  width: 20px;
+  display: inline-block;
+}
+.arrow {
+  display: inline-block;
+  width: 8px;
+  transform: rotate(90deg);
+}
+.func-block {
+  padding: 12px 4px;
+}
+.func-block .trig-block,
+.func-block .f-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.num-col {
+  background-color: #fcfcfc;
+  font-weight: bold;
+  font-size: 26px;
+}
+.skyblue {
+  background-color: #91c1e7;
+}
+.first {
+  height:33px;
+  padding: 8px 20px;
+  line-height: 1;
+}
+.no-bg {
+  background-color: transparent;
+}
+.f-block {
+  padding-left: 35px;
+}
+form {
+  display: flex;
+  justify-content: center;
+}
+input {
+  font-size: 48px;
+  font-weight: bold;
+  border: none;
+  background: transparent;
+  text-align: right;
+  outline: none;
+  max-width: 100%;
+  margin-bottom:20px;
+}
+::placeholder {
+  color: #212529;
+  font-weight: bold;
+}
+.dark {
+  font-weight: bold;
+}
+.sign{
+  font-size: 30px;
+}
+.calBtn{
+  height:100%;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+}
+.calBtn:hover{
+  background-color: rgb(231, 227, 227);
+  border:2px solid gray;
+}
+#funcs{
+  position:absolute;
+  top:30px;
+  width:89px;
+  display: none;
+  background-color: #f1f1f1;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+  z-index:3;
+}
+#trigo_funcs{
+  position:absolute;
+  top:30px;
+  width:89px;
+  display: none;
+  background-color: #f1f1f1;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+  z-index:3;
+}
+.trig-block{
+  position:relative;
+  cursor: pointer;
+}
+.f-block{
+  position:relative;
+  cursor: pointer;
+}
+#funcs span,#trigo_funcs span{
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #f7f7f7;
+  border: 2px solid #f1f1f1;
+  height:46px;
+}
+#funcs span:hover,#trigo_funcs span:hover{
+  background-color: rgb(231, 227, 227);
+  border:2px solid gray;
+}
+.active-angle{
+ border:2px solid black;
+}
+.disabled{
+  color:lightgray;
+}
