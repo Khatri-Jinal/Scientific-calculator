@@ -1,5 +1,5 @@
 export const POWER = "POWER("
-export let calculator_buttons = [
+export let calculatorButtons = [
     {
         name: "deg",
         symbol: "DEG",

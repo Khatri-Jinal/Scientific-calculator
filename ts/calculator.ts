@@ -1,66 +1,67 @@
-import { POWER, calculator_buttons } from './buttons.js';
+import { POWER, calculatorButtons } from './buttons.js';
 
 
-const trig_container = document.getElementById("trigo_funcs")!;
-const trig_block = document.getElementById("trig-block")!;
-const func_container = document.getElementById("funcs")!;
-const f_block = document.getElementById("f-block")!;
-const func_arrow = document.getElementById("func_arrow")!;
-const trig_arrow = document.getElementById("trig_arrow")!;
-const other_funcs = document.getElementById("other-funcs")!;
-
-other_funcs.addEventListener("click", () => {
+const trigContainer = document.getElementById("trigo_funcs")!;
+const trigBlock = document.getElementById("trig-block")!;
+const funcContainer = document.getElementById("funcs")!;
+const fBlock = document.getElementById("f-block")!;
+const funcArrow = document.getElementById("func_arrow")!;
+const trigArrow = document.getElementById("trig_arrow")!;
+const otherFuncs = document.getElementById("other-funcs")!;
+type Expression = string | number | boolean;
+type MemoryButton= 'MC' | 'MR' | 'MS' | 'M+' | 'M-' ;
+otherFuncs.addEventListener("click", () => {
     changeFuncs();
 })
-const FACTORIAL = "FACTORIAL";
-const OPERATORS = ["+", "-", "*", "/"];
-interface Exp_data {
-    operation: (string | number | boolean)[],
-    formula: (string | number | boolean)[],
+const factorialSearch = "FACTORIAL";
+const operators = ["+", "-", "*", "/"];
+interface ExpData {
+    operation: Array<Expression>,
+    formula: Array<Expression>,
 }
-let data: Exp_data = {
+let data: ExpData = {
     operation: [],
     formula: [],
 };
 let ans: number | string = 0;
 let result: number | string;
 let btn: string;
-const input_element = document.querySelector(".btn-wrap")!;
-const output_operation_element = document.querySelector("#display") as HTMLInputElement;
-let RADIAN = false;
-let memory_value = 0;
-const deg_btn = document.getElementById("deg")!;
+const inputElement = document.querySelector(".btn-wrap")!;
+const outputOperationElement = document.querySelector("#display") as HTMLInputElement;
+let radian = false;
+let memoryValue = 0;
+const degBtn = document.getElementById("deg")!;
 
-trig_arrow.addEventListener("click", (event) => {
+funcArrow.addEventListener("click", (event) => {
     event.stopPropagation();
 });
 
-trig_block.addEventListener("click", (event) => {
+trigBlock.addEventListener("click", (event) => {
     event.preventDefault();
-    if (trig_container.style.display === "block") {
-        trig_container.style.display = "none";
-        trig_arrow.style.transform = "rotate(90deg)";
+    if (trigContainer.style.display === "block") {
+        trigContainer.style.display = "none";
+        funcArrow.style.transform = "rotate(90deg)";
     } else {
-        trig_container.style.display = "block";
-        trig_arrow.style.transform = "rotate(270deg)";
+        trigContainer.style.display = "block";
+        funcArrow.style.transform = "rotate(270deg)";
     }
 });
 
-f_block.addEventListener("click", () => {
-    if (func_container.style.display === "block") {
-        func_container.style.display = "none";
-        func_arrow.style.transform = "rotate(90deg)";
+fBlock.addEventListener("click", () => {
+    if (funcContainer.style.display === "block") {
+        funcContainer.style.display = "none";
+        funcArrow.style.transform = "rotate(90deg)";
     } else {
-        func_container.style.display = "block";
-        func_arrow.style.transform = "rotate(270deg)";
+        funcContainer.style.display = "block";
+        funcArrow.style.transform = "rotate(270deg)";
     }
 });
 
 function angleToggle() {
-    if (RADIAN) {
-        deg_btn.innerHTML = 'RAD';
+    if (radian) {
+        degBtn.innerHTML = 'RAD';
     } else {
-        deg_btn.innerHTML = 'DEG';
+        degBtn.innerHTML = 'DEG';
     }
     return false;
 }
@@ -71,58 +72,58 @@ function negate(num: number) {
 }
 
 function toExponent(number: number) {
-    let expval = number.toExponential();
-    return expval;
+    let expVal = number.toExponential();
+    return expVal;
 }
 
 function changeFuncs() {
-    let square_cube = document.getElementById("sq-cube")!.innerHTML;
-    let square_cube_root = document.getElementById("sq-cube-root")!.innerHTML;
-    if (square_cube === "x²") {
+    let squareCube = document.getElementById("sq-cube")!.innerHTML;
+    let squareCubeRoot = document.getElementById("sq-cube-root")!.innerHTML;
+    if (squareCube=== "x²") {
         document.getElementById("sq-cube")!.innerHTML = "x​³";
     } else {
         document.getElementById("sq-cube")!.innerHTML = "x²";
     }
-    if (square_cube_root === "√x") {
+    if (squareCubeRoot === "√x") {
         document.getElementById("sq-cube-root")!.innerHTML = "∛x";
     } else {
         document.getElementById("sq-cube-root")!.innerHTML = "√x";
     }
 }
 
-input_element.addEventListener("click", (event) => {
-    const target_btn = event.target as Element;
-    btn = target_btn.innerHTML;
-    for (let button of calculator_buttons) {
-        if (button.symbol == target_btn.innerHTML) {
+inputElement.addEventListener("click", (event) => {
+    const targetBtn = event.target as Element;
+    btn = targetBtn.innerHTML;
+    for (let button of calculatorButtons) {
+        if (button.symbol == targetBtn.innerHTML) {
             calculator(button);
-            memoryFunction(btn);
+            memoryFunction(btn as MemoryButton);
             break;
         }
     }
 });
 
-function memoryFunction(btn: string) {
+function memoryFunction(btn: MemoryButton) {
     switch (btn) {
         case "MC":
-            memory_value = 0;
+            memoryValue = 0;
             break;
         case "MR":
-            updateOutputresult(memory_value);
+            updateOutputresult(memoryValue);
             break;
         case "M+":
-            memory_value = memory_value + parseInt((output_operation_element as HTMLInputElement).value);
+            memoryValue = memoryValue + parseInt((outputOperationElement as HTMLInputElement).value);
             break;
         case "M-":
-            memory_value -= parseInt((output_operation_element as HTMLInputElement).value);
+            memoryValue -= parseInt((outputOperationElement as HTMLInputElement).value);
             break;
         case "MS":
-            memory_value = parseInt((output_operation_element as HTMLInputElement).value);
+            memoryValue = parseInt((outputOperationElement as HTMLInputElement).value);
             break;
         default:
             return;
     }
-    if (memory_value === 0) {
+    if (memoryValue === 0) {
         document.getElementsByClassName("memory-btn")[0].classList.add("disabled");
         document.getElementsByClassName("memory-btn")[1].classList.add("disabled");
         document.getElementsByClassName("memory-btn")[0].classList.add("btn");
@@ -147,13 +148,13 @@ function decimalCount(num: number | string) {
 
     return 0;
 }
-interface calc_btns {
+interface CalcBtns {
     name: string,
     symbol: string | number,
-    formula: boolean | string | number,
+    formula: Expression,
     type: string
 }
-function calculator(button: calc_btns) {
+function calculator(button: CalcBtns) {
     if (button.type === "operator") {
         if (button.name === "mod") {
             data.operation.push(button.formula);
@@ -270,34 +271,34 @@ function calculator(button: calc_btns) {
             data.operation.pop();
             data.formula.pop();
         } else if (button.name === "deg") {
-            RADIAN = true;
+            radian = true;
             angleToggle();
 
         } else if (button.name === "rad") {
-            RADIAN = false;
+            radian = false;
             angleToggle();
         }
 
     } else if (button.type === "calculate") {
-        let formula_str = data.formula.join("");
-        let POWER_SEARCH_RESULT = search(data.formula, POWER);
-        let FACTORIAL_SEARCH_RESULT = search(data.formula, FACTORIAL);
-        const BASES = powerbasegetter(data.formula, POWER_SEARCH_RESULT);
-        const NUMBERS = factorialnumgetter(data.formula, FACTORIAL_SEARCH_RESULT);
+        let formulaStr = data.formula.join("");
+        let powerSearchresult = search(data.formula, POWER);
+        let factorialSearchresult = search(data.formula, factorialSearch);
+        const bases = powerbasegetter(data.formula,powerSearchresult);
+        const numbers = factorialnumgetter(data.formula, factorialSearchresult);
 
-        BASES.forEach((base) => {
-            let toreplace = base + POWER;
+        bases.forEach((base) => {
+            let toReplace = base + POWER;
             let replacement = "Math.pow(" + base + ",";
 
-            formula_str = formula_str.replace(toreplace, replacement);
+            formulaStr = formulaStr.replace(toReplace, replacement);
         });
 
-        NUMBERS.forEach((number) => {
-            formula_str = formula_str.replace(number.toReplace, number.replacement);
+        numbers.forEach((num) => {
+            formulaStr = formulaStr.replace(num.toReplace, num.replacement);
         });
 
         try {
-            result = Number(eval(formula_str));
+            result = Number(eval(formulaStr));
             var decCount = decimalCount(result);
             if (decCount > 5) {
                 result = (parseFloat(result.toPrecision(5)));
@@ -322,115 +323,115 @@ interface ReplaceType {
     toReplace: string,
     replacement: string
 }
-function factorialnumgetter(formula: (string | number | boolean)[], FACTORIAL_SEARCH_RESULT: number[]) {
+function factorialnumgetter(formula: Array<Expression>, factorialSearchresult: number[]) {
     let numbers: ReplaceType[] = [];
 
-    FACTORIAL_SEARCH_RESULT.forEach((fact_index) => {
-        let number = [];
-        let prev_idx = fact_index - 1;
+    factorialSearchresult.forEach((factIndex) => {
+        let num: Array<Expression> = [];
+        let prevIdx= factIndex - 1;
 
-        while (prev_idx >= 0) {
-            let is_operator = false;
+        while (prevIdx >= 0) {
+            let isOperator = false;
 
-            OPERATORS.forEach((OPERATOR) => {
-                if (formula[prev_idx] === OPERATOR) {
-                    is_operator = true;
+            operators.forEach((operator) => {
+                if (formula[prevIdx] === operator) {
+                    isOperator = true;
                 }
             });
 
-            if ((is_operator)) {
+            if ((isOperator)) {
                 break;
             }
 
-            number.unshift(formula[prev_idx]);
-            prev_idx--;
+            num.unshift(formula[prevIdx]);
+            prevIdx--;
         }
 
-        let number_str = number.join("");
+        let numberStr = num.join("");
         const factorial = "factorial(",
-            close_paren = ")";
-        let toreplace = number_str + FACTORIAL;
-        let replacement = factorial + number_str + close_paren;
+            closeParen = ")";
+        let toReplace = numberStr + factorialSearch;
+        let replacement = factorial + numberStr + closeParen;
         numbers.push({
-            toReplace: toreplace,
+            toReplace: toReplace,
             replacement: replacement,
         });
     });
     return numbers;
 }
 
-function powerbasegetter(formula: (string | number | boolean)[], POWER_SEARCH_RESULT: number[]) {
-    let powers_base: (number | string)[] = [];
+function powerbasegetter(formula: Array<Expression>, powerSearchresult: number[]) {
+    let powersBase: (number | string)[] = [];
 
-    POWER_SEARCH_RESULT.forEach((power_index) => {
-        let base = [];
-        let paren_count = 0;
-        let prev_idx = power_index - 1;
+    powerSearchresult.forEach((powerIndex) => {
+        let base: Array<Expression> = [];
+        let parenCount = 0;
+        let prevIdx = powerIndex - 1;
 
-        while (prev_idx >= 0) {
-            let is_operator = false;
+        while (prevIdx >= 0) {
+            let isOperator = false;
 
-            if (formula[prev_idx] === "(") {
-                paren_count -= 1;
+            if (formula[prevIdx] === "(") {
+                parenCount -= 1;
             }
 
-            if (formula[prev_idx] === ")") {
-                paren_count += 1;
+            if (formula[prevIdx] === ")") {
+                parenCount += 1;
             }
 
-            OPERATORS.forEach((OPERATOR) => {
-                if (formula[prev_idx] === OPERATOR) {
-                    is_operator = true;
+            operators.forEach((operator) => {
+                if (formula[prevIdx] === operator) {
+                    isOperator = true;
                 }
             });
 
-            let is_power = formula[prev_idx] === POWER;
+            let isPower = formula[prevIdx] === POWER;
 
-            if ((is_operator && paren_count === 0) || is_power) {
+            if ((isOperator && parenCount === 0) || isPower) {
                 break;
             }
 
-            base.unshift(formula[prev_idx]);
-            prev_idx--;
+            base.unshift(formula[prevIdx]);
+            prevIdx--;
         }
-        powers_base.push(base.join(""));
+        powersBase.push(base.join(""));
     });
 
-    return powers_base;
+    return powersBase;
 }
 
-function search(array: (string | number | boolean)[], keyword: string) {
-    let search_res: number[] = [];
+function search(array: Array<Expression>, keyword: string) {
+    let searchRes: number[] = [];
 
     array.forEach((element, index) => {
         if (element == keyword) {
-            search_res.push(index);
+            searchRes.push(index);
         }
     });
 
-    return search_res;
+    return searchRes;
 }
 
 function updateOutputOperation(operation: string) {
-    output_operation_element.value = operation;
+    outputOperationElement.value = operation;
 }
 
 function updateOutputresult(result: (number | string)) {
-    output_operation_element.value = result.toString();
+    outputOperationElement.value = result.toString();
 }
 
-function trigo(callback: Function, angle: number) {
-    if (!RADIAN) {
+function trigo(callback: (angle: number) => number, angle: number) {
+    if (!radian) {
         angle = (angle * Math.PI) / 180;
     }
 
     return callback(angle);
 }
 
-function inv_trigo(callback: Function, value: number) {
+function inv_trigo(callback: (angle: number) => number, value: number) {
     let angle = callback(value);
 
-    if (!RADIAN) {
+    if (!radian) {
         angle = (angle * 180) / Math.PI;
     }
 
